@@ -47,16 +47,7 @@ git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git C:\\Users
 cd C:\\Users\\[YourUsername]\\ClaudeComputerCommander
 ```
 
-2. Install dependencies and build:
-```bash
-npm install
-```
-
-```bash
-npm run build
-```
-
-3. Run the appropriate setup script based on your needs:
+2. Install dependencies and run the appropriate setup script based on your needs:
 ```bash
 # For Windows with automatic configuration:
 npm run setup:windows
@@ -72,9 +63,9 @@ npm run setup:custom
 npm run setup
 ```
 
-4. Follow any on-screen instructions provided by the setup script.
+3. Follow any on-screen instructions provided by the setup script.
 
-5. Restart Claude if it's running.
+4. Restart Claude if it's running.
 
 ### Option 2: Add to claude_desktop_config manually
 
