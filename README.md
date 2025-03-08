@@ -40,8 +40,8 @@ This method is best if you don't have permissions to directly modify the Claude 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git
-cd ClaudeComputerCommander
+git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git C:\Users\[YourUsername]\ClaudeComputerCommander
+cd C:\Users\[YourUsername]\ClaudeComputerCommander
 ```
 
 2. Install dependencies and build:
@@ -72,16 +72,30 @@ Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA
 ```json
 {
   "mcpServers": {
-    "desktop-commander": {
-      "command": "npx",
+    "desktopCommander": {
+      "command": "node",
       "args": [
-        "-y",
-        "@jasondsmith72/desktop-commander"
+        "C:\\Users\\[YourUsername]\\ClaudeComputerCommander\\dist\\index.js"
       ]
     }
   }
 }
 ```
+
+Make sure to replace `[YourUsername]` with your actual Windows username. For example:
+```json
+{
+  "mcpServers": {
+    "desktopCommander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\administrator.MTUSACLOUD\\ClaudeComputerCommander\\dist\\index.js"
+      ]
+    }
+  }
+}
+```
+
 Restart Claude if running.
 
 ## Uninstallation
