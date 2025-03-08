@@ -3,6 +3,7 @@ import { join } from 'path';
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +36,16 @@ function logToFile(message, isError = false) {
             timestamp: new Date().toISOString(),
             message: `Failed to write to log file: ${err.message}`
         }) + '\n');
+    }
+}
+
+// Check if package is published to npm
+function isPackagePublished() {
+    try {
+        execSync('npm view @jasondsmith72/desktop-commander version', { stdio: 'pipe' });
+        return true;
+    } catch (error) {
+        return false;
     }
 }
 
@@ -73,19 +84,33 @@ try {
 
     // Prepare the new server config based on OS
     // Determine if running through npx or locally
-    const isNpx =  import.meta.url.endsWith('dist/setup-claude-server.js');
+    const isNpx = import.meta.url.endsWith('dist/setup-claude-server.js');
+    const isPublished = isPackagePublished();
 
-    const serverConfig = isNpx ? {
-        "command": "npx",
-        "args": [
-            "@wonderwhy-er/desktop-commander"
-        ]
-    } : {
-        "command": "node",
-        "args": [
-            join(__dirname, 'dist', 'index.js')
-        ]
-    };
+    // Configure server based on environment
+    let serverConfig;
+    
+    if (isPublished && isNpx) {
+        // Package is published and we're running through npx
+        serverConfig = {
+            "command": "npx",
+            "args": [
+                "@jasondsmith72/desktop-commander"
+            ]
+        };
+        logToFile('Configuring to use published npm package');
+    } else {
+        // Either package is not published or we're running locally
+        // Use the direct path to the script
+        const scriptPath = join(__dirname, 'dist', 'index.js');
+        serverConfig = {
+            "command": "node",
+            "args": [
+                scriptPath
+            ]
+        };
+        logToFile(`Configuring to use local script at: ${scriptPath}`);
+    }
 
     // Add or update the terminal server config
     if (!config.mcpServers) {
@@ -93,14 +118,6 @@ try {
     }
     
     config.mcpServers.desktopCommander = serverConfig;
-
-    // Add puppeteer server if not present
-    /*if (!config.mcpServers.puppeteer) {
-        config.mcpServers.puppeteer = {
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
-        };
-    }*/
 
     // Write the updated config back
     writeFileSync(claudeConfigPath, JSON.stringify(config, null, 2), 'utf8');
