@@ -44,6 +44,11 @@ function logToFile(message, isError = false) {
     }
 }
 
+// Function to expand environment variables in a string
+function expandEnvVars(str) {
+    return str.replace(/%([^%]+)%/g, (_, n) => process.env[n] || '');
+}
+
 // Check if package is published to npm
 function isPackagePublished() {
     try {
@@ -122,23 +127,26 @@ async function setup() {
         logToFile('Configuring to use published npm package');
     } else {
         // Either package is not published or we're running locally
-        // Use the direct path to the script using full path for reliability
-        const username = process.env.USERNAME || process.env.USER || 'administrator';
-        const domainSuffix = process.env.USERDOMAIN ? `.${process.env.USERDOMAIN}` : '';
-        const usernameFull = username + domainSuffix;
-        
+        // Use a path with environment variables for flexibility
         // Get repository name from the current directory
         const repoDir = __dirname.split('\\').pop();
         const repoName = repoDir === 'dist' ? __dirname.split('\\').slice(-2, -1)[0] : repoDir;
         
-        const scriptPath = `C:\\Users\\${usernameFull}\\${repoName}\\dist\\index.js`;
+        // Create a script path using environment variables
+        const scriptPath = `C:\\Users\\%USERNAME%.%USERDOMAIN%\\${repoName}\\dist\\index.js`;
+        
+        // For the config file that will be written now, expand variables
+        const expandedScriptPath = expandEnvVars(scriptPath);
+        
         serverConfig = {
             "command": "node",
             "args": [
-                scriptPath
+                expandedScriptPath
             ]
         };
-        logToFile(`Configuring to use local script at: ${scriptPath}`);
+        
+        logToFile(`Using path with environment variables: ${scriptPath}`);
+        logToFile(`Expanded to: ${expandedScriptPath}`);
     }
 
     // Add desktopCommander server
@@ -161,6 +169,8 @@ async function setup() {
     logToFile('\nSetup completed successfully!');
     logToFile('Please restart Claude Desktop to apply the changes.');
     logToFile('\nYou can customize allowed directories by editing the config.json file.');
+    logToFile('\nNOTE: Your configuration now uses a path with expanded environment variables.');
+    logToFile('If you share this configuration with others, they can replace %USERNAME% and %USERDOMAIN% with their own values.');
 }
 
 // Run the setup
