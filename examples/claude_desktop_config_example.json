@@ -1,0 +1,61 @@
+{
+  "mcpServers": {
+    "desktopCommander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\%USERNAME%.%USERDOMAIN%\\ClaudeComputerCommander\\dist\\index.js"
+      ]
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_PERSIST": "true"
+      },
+      "MEMORY_PATH": "C:\\claudeapps\\memory"
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-token-here"
+      }
+    },
+    "weather": {
+      "command": "python",
+      "args": [
+        "-m",
+        "weather"
+      ]
+    },
+    "brave_search": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "your-api-key-here"
+      }
+    },
+    "fetch": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_fetch"
+      ]
+    }
+  }
+}
