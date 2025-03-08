@@ -122,8 +122,16 @@ async function setup() {
         logToFile('Configuring to use published npm package');
     } else {
         // Either package is not published or we're running locally
-        // Use the direct path to the script
-        const scriptPath = join(__dirname, 'dist', 'index.js');
+        // Use the direct path to the script using full path for reliability
+        const username = process.env.USERNAME || process.env.USER || 'administrator';
+        const domainSuffix = process.env.USERDOMAIN ? `.${process.env.USERDOMAIN}` : '';
+        const usernameFull = username + domainSuffix;
+        
+        // Get repository name from the current directory
+        const repoDir = __dirname.split('\\').pop();
+        const repoName = repoDir === 'dist' ? __dirname.split('\\').slice(-2, -1)[0] : repoDir;
+        
+        const scriptPath = `C:\\Users\\${usernameFull}\\${repoName}\\dist\\index.js`;
         serverConfig = {
             "command": "node",
             "args": [
