@@ -44,6 +44,16 @@ function logToFile(message, isError = false) {
     }
 }
 
+// Check if package is published to npm
+function isPackagePublished() {
+    try {
+        execSync('npm view @jasondsmith72/desktop-commander version', { stdio: 'pipe' });
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 // Main setup function
 async function setup() {
     logToFile('Starting Windows setup for ClaudeComputerCommander...');
@@ -96,19 +106,32 @@ async function setup() {
 
     // Determine if running through npx or locally
     const isNpx = import.meta.url.endsWith('dist/setup-claude-windows.js');
+    const isPublished = isPackagePublished();
 
-    // Add or update the desktop commander server configuration
-    const serverConfig = isNpx ? {
-        "command": "npx",
-        "args": [
-            "@jasondsmith72/desktop-commander"
-        ]
-    } : {
-        "command": "node",
-        "args": [
-            join(__dirname, 'dist', 'index.js')
-        ]
-    };
+    // Configure server based on environment
+    let serverConfig;
+    
+    if (isPublished && isNpx) {
+        // Package is published and we're running through npx
+        serverConfig = {
+            "command": "npx",
+            "args": [
+                "@jasondsmith72/desktop-commander"
+            ]
+        };
+        logToFile('Configuring to use published npm package');
+    } else {
+        // Either package is not published or we're running locally
+        // Use the direct path to the script
+        const scriptPath = join(__dirname, 'dist', 'index.js');
+        serverConfig = {
+            "command": "node",
+            "args": [
+                scriptPath
+            ]
+        };
+        logToFile(`Configuring to use local script at: ${scriptPath}`);
+    }
 
     // Add desktopCommander server
     config.mcpServers.desktopCommander = serverConfig;
