@@ -21,15 +21,21 @@ The setup scripts have been updated to check if the package is published to npm,
 
 1. Clone this repository:
    ```
-   git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git
+   git clone https://github.com/jasondsmith72/ClaudeComputerCommander.git C:\Users\[YourUsername]\ClaudeComputerCommander
    ```
 
 2. Navigate to the cloned directory:
    ```
-   cd ClaudeComputerCommander
+   cd C:\Users\[YourUsername]\ClaudeComputerCommander
    ```
 
-3. Run the appropriate setup script for your platform:
+3. Install dependencies and build the project:
+   ```
+   npm install
+   npm run build
+   ```
+
+4. Run the appropriate setup script for your platform:
    - For Windows: `npm run setup:windows`
    - For custom setup with manual instructions: `npm run setup:custom`
    - For standard setup: `npm run setup`
@@ -42,18 +48,39 @@ You can also manually configure Claude Desktop to use this package:
    - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
    - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-2. Add the following to the `mcpServers` section:
+2. Update or add the following to the file:
    ```json
-   "desktopCommander": {
-     "command": "node",
-     "args": [
-       "C:\\path\\to\\ClaudeComputerCommander\\dist\\index.js"
-     ]
+   {
+     "mcpServers": {
+       "desktopCommander": {
+         "command": "node",
+         "args": [
+           "C:\\Users\\[YourUsername]\\ClaudeComputerCommander\\dist\\index.js"
+         ]
+       }
+     }
    }
    ```
-   (Replace the path with the actual path to where you've cloned the repository)
+   (Replace `[YourUsername]` with your actual Windows username)
 
 3. Save the file and restart Claude Desktop.
+
+## Example Working Configuration
+
+Here's an example of a working configuration (note the double backslashes in the path):
+
+```json
+{
+  "mcpServers": {
+    "desktopCommander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\administrator.MTUSACLOUD\\ClaudeComputerCommander\\dist\\index.js"
+      ]
+    }
+  }
+}
+```
 
 ## Still Having Issues?
 
@@ -64,4 +91,6 @@ If you're still experiencing problems, please:
    - `setup-windows.log`
    - `setup-custom.log`
 
-2. Open an issue on GitHub with details about the error and your environment.
+2. Ensure the file actually exists at the path specified in the configuration.
+
+3. Open an issue on GitHub with details about the error and your environment.
