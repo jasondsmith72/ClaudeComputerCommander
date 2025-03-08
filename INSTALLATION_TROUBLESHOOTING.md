@@ -63,11 +63,28 @@ You can also manually configure Claude Desktop to use this package:
    ```
    (Replace `[YourUsername]` with your actual Windows username)
 
-3. Save the file and restart Claude Desktop.
+### Using Environment Variables (Windows)
 
-## Example Working Configuration
+For better portability on Windows, you can use environment variables in your path:
 
-Here's an example of a working configuration (note the double backslashes in the path):
+```json
+{
+  "mcpServers": {
+    "desktopCommander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\%USERNAME%.%USERDOMAIN%\\ClaudeComputerCommander\\dist\\index.js"
+      ]
+    }
+  }
+}
+```
+
+This makes it easier to share configurations between different computers or users. When Claude runs the command, Windows will automatically expand the `%USERNAME%` and `%USERDOMAIN%` variables to the correct values for the current user.
+
+## Example Working Configurations
+
+### Standard path configuration:
 
 ```json
 {
@@ -76,6 +93,21 @@ Here's an example of a working configuration (note the double backslashes in the
       "command": "node",
       "args": [
         "C:\\Users\\administrator.MTUSACLOUD\\ClaudeComputerCommander\\dist\\index.js"
+      ]
+    }
+  }
+}
+```
+
+### With environment variables:
+
+```json
+{
+  "mcpServers": {
+    "desktopCommander": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\%USERNAME%.%USERDOMAIN%\\ClaudeComputerCommander\\dist\\index.js"
       ]
     }
   }
@@ -93,4 +125,9 @@ If you're still experiencing problems, please:
 
 2. Ensure the file actually exists at the path specified in the configuration.
 
-3. Open an issue on GitHub with details about the error and your environment.
+3. Try running this command to verify the correct path:
+   ```
+   dir "C:\Users\%USERNAME%\ClaudeComputerCommander\dist\index.js"
+   ```
+
+4. Open an issue on GitHub with details about the error and your environment.
