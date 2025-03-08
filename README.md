@@ -354,12 +354,13 @@ For commands that may take a while:
 
 If you encounter issues:
 
-1. Check the monitoring dashboard for error logs
-2. Verify permissions in the configuration UI
-3. Run `check_for_updates` to ensure you have the latest version
-4. Visit the web configuration interface for detailed system status
-5. Ensure your desired file paths are in the allowed directories configuration
-6. If you're getting "access denied" errors, use the `list_allowed_directories` tool to see which directories are accessible
+1. Check the [Installation Troubleshooting Guide](INSTALLATION_TROUBLESHOOTING.md) for common installation issues
+2. Check the monitoring dashboard for error logs
+3. Verify permissions in the configuration UI
+4. Run `check_for_updates` to ensure you have the latest version
+5. Visit the web configuration interface for detailed system status
+6. Ensure your desired file paths are in the allowed directories configuration
+7. If you're getting "access denied" errors, use the `list_allowed_directories` tool to see which directories are accessible
 
 ## Contributing
 
