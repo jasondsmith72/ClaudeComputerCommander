@@ -69,6 +69,8 @@ npm run setup
 ### Option 2: Add to claude_desktop_config manually
 
 Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA%\Claude\claude_desktop_config.json):
+
+#### Standard config (replacing with your username):
 ```json
 {
   "mcpServers": {
@@ -82,21 +84,23 @@ Add this entry to your claude_desktop_config.json (on Windows, found at %APPDATA
 }
 ```
 
-Make sure to replace `[YourUsername]` with your actual Windows username. For example:
+#### Using Windows environment variables (recommended):
 ```json
 {
   "mcpServers": {
     "desktopCommander": {
       "command": "node",
       "args": [
-        "C:\\Users\\administrator.MTUSACLOUD\\ClaudeComputerCommander\\dist\\index.js"
+        "C:\\Users\\%USERNAME%.%USERDOMAIN%\\ClaudeComputerCommander\\dist\\index.js"
       ]
     }
   }
 }
 ```
 
-Restart Claude if running.
+This makes your configuration more portable between different Windows computers. Windows will automatically expand the `%USERNAME%` and `%USERDOMAIN%` variables when running the command.
+
+Make sure to restart Claude after making changes to the configuration file.
 
 ## Uninstallation
 
